@@ -1,7 +1,7 @@
 set nocompatible
 filetype off
 
-" Vundle {{{
+" vundle {{{
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -19,7 +19,7 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-surround'
 Plugin 'mattn/emmet-vim'
 Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+" Plugin 'honza/vim-snippets'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'elixir-lang/vim-elixir'
 Plugin 'chriskempson/base16-vim'
@@ -28,14 +28,22 @@ Plugin 'nono/vim-handlebars'
 Plugin 'mattn/gist-vim'
 Plugin 'mattn/webapi-vim'
 Plugin 'jewes/Conque-Shell'
+Plugin 'tpope/vim-rails'
+Plugin 'msanders/snipmate.vim'
+Plugin 'szw/vim-tags'
+Plugin 'jpo/vim-railscasts-theme'
+Plugin 'jszakmeister/vim-togglecursor'
 
 call vundle#end()
 
 " }}}
 
+" set guicursor=n-v-c:block-Cursor
+" set guicursor+=i:ver30-iCursor
+
 let mapleader = ","
 syntax enable
-" colorscheme base16-default
+colorscheme railscasts
 set background=dark
 
 " Mappings {{{
@@ -51,16 +59,35 @@ nnoremap <leader>ev :vs $MYVIMRC<CR>
 nnoremap <leader>gs :Gstatus<CR><C-W>15+
 nnoremap <leader>m :NERDTreeToggle<CR>
 nnoremap <leader>rs :!clear;time bundle exec rake<CR>
-nnoremap <leader>a :Ack 
-nnoremap <leader>d :bd<CR> 
+nnoremap <leader>a :Ack
+nnoremap <leader>d :bd<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader><cr> :noh<CR>
 nnoremap <leader>l :ls<CR>:b
 nnoremap <leader>t :CtrlP<CR>
 nnoremap <leader>ba :ConqueTerm bash<CR>
+
+" set windows resize methods
+" {
+set winheight=30
+set winminheight=5
+
+nnoremap <silent>= :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent>- :exe "resize " . (winheight(0) * 2/3)<CR>
+" xhb
+nnoremap <silent>] :vertical resize +20<CR>
+nnoremap <silent>[ :vertical resize -20<CR>
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+" }
+
 nnoremap n nzz
 nnoremap N Nzz
 " }}}
+"
 
 " Visual mode mappings {{{
 vnoremap < <gv
@@ -88,13 +115,14 @@ set hlsearch
 set ignorecase
 set incsearch
 set list
-set listchars=tab:▸\ ,eol:¬,nbsp:⋅,trail:•
+" set listchars=tab:▸\ ,eol:¬,nbsp:⋅,trail:•
+set listchars=tab:▸\ ,eol:¬,nbsp:⋅,trail:.
 set noswapfile
 set number
 set shell=/bin/bash
 set showmatch
 set smartcase
-"set smartindent
+set smartindent
 set term=screen-256color
 set ts=2 sts=2 sw=2 expandtab
 set novisualbell
@@ -118,7 +146,7 @@ au Bufread,BufNewFile *.markdown set textwidth=79
 " .feature files are Cucumber.
 au Bufread,BufNewFile *.feature set filetype=cucumber
 
-au InsertEnter * set nocul 
+" au InsertEnter * set nocul
 au InsertLeave * set cul
 
 " }}}
@@ -140,8 +168,8 @@ function! GetName()
 endfunction
 
 
-set statusline=%1*[%{GetName()}]\ 
-set statusline+=%<pwd:%{getcwd()}\ 
+set statusline=%1*[%{GetName()}]\
+set statusline+=%<pwd:%{getcwd()}\
 set statusline+=%2*%{&modified?'\[+]':''}%*
 set statusline+=%{IsHelp()}
 set statusline+=%{&readonly?'\ (ro)\ ':''}
@@ -149,11 +177,11 @@ set statusline+=[
 set statusline+=%{strlen(&fenc)?&fenc:'none'}\|
 set statusline+=%{&ff}\|
 set statusline+=%{strlen(&ft)?&ft:'<none>'}
-set statusline+=]\ 
+set statusline+=]\
 set statusline+=%=
 set statusline+=c%c
 set statusline+=,l%l
-set statusline+=/%L\ 
+set statusline+=/%L\
 
 set laststatus=2
 
